@@ -1,20 +1,33 @@
 import http from 'node:http';
 import fs from 'node:fs/promises';
 
-const data = await fs.readFile('package.json', "utf-8");
-console.log('data: ', data);
-
-
 const PORT = 8080;
+const fileName = 'comedians.json';
 
 http
-  .createServer((req, res) => {
-    res.writeHead(200, {      
-      "Content-Type": "text/html; charset=utf-8",
-      "Access-Control-Allow-Origin": '*',
-    });
-    res.end("<h1>Привет мир</h1>");
-
+  .createServer(async (req, res) => {  
+    if (req.method === 'GET' && req.url === '/comedians') {
+      try {
+        const data = await fs.readFile(fileName, 'utf-8');
+        
+        res.writeHead(200, {      
+          "Content-Type": "application/json; charset=utf-8",
+          "Access-Control-Allow-Origin": '*',
+        });
+        res.end(data);
+      } catch (error) {
+        res.writeHead('500', { 
+          "Content-Type": "text/plain; charset=utf-8", 
+        });
+        res.end(`Ошибка сервера: ${error.message}`);
+      }
+    } else {
+      res.writeHead(404, {
+        "Content-Type": "text/html; charset=utf-8",
+        "Access-Control-Allow-Origin": '*',
+      });
+      res.end("<h2>Not found</h2>");
+    }
   })
   .listen(PORT);
 
