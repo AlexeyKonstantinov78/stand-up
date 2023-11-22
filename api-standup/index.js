@@ -45,15 +45,15 @@ const startServer = async () => {
   if (!(await checkFiles())) return;
 
   http
-    .createServer(async (req, res) => {        
-      res.setHeader("Access-Control-Allow-Origin", '*'); // заголовок  по доступу
-      console.log(req.url);
-      const segments = req.url.split('/').filter(Boolean); // фильтр boolean убирает пустые 
-      console.log('segments: ', segments);
-
-      // GET && comrdians/{id}
-      if (req.method === 'GET' && segments[0] === 'comedians') {
-        try {
+    .createServer(async (req, res) => {         
+      try {
+        res.setHeader("Access-Control-Allow-Origin", '*'); // заголовок  по доступу
+        console.log(req.url);
+        const segments = req.url.split('/').filter(Boolean); // фильтр boolean убирает пустые 
+        console.log('segments: ', segments);
+  
+        // GET && comrdians/ id
+        if (req.method === 'GET' && segments[0] === 'comedians') {          
           const data = await fs.readFile(COMEDIANS, 'utf-8');
           
           if (segments.length === 2) {
@@ -69,30 +69,29 @@ const startServer = async () => {
           }
           
           sendData(res, data);
-          return;
-        } catch (error) {
-          sendError(res, 500, `Ошибка сервера: ${error.message}`);
+          return;          
+        } 
+  
+        // добавление клиента POST / clients
+        if (req.method === 'POST' && segments[0] === 'clients' )  {
+  
         }
-      } 
-
-      // добавление клиента POST / clients
-      if (req.method === 'POST' && segments[0] === 'clients' )  {
-
-      }
-
-      // Получение клиента по номеру билета GET/ clients / :ticket
-      if (eq.method === 'GET' && segments[0] === 'clients' && segments.length === 2) {
-
-      }
-
-      // ОБновление клиента по номеру билета PATCH/ clients / :ticket
-      if (eq.method === 'PATCH' && segments[0] === 'clients' && segments.length === 2) {
-
-      }
-
-      // not found
-      sendError(res, 404, 'Not found');
-      
+  
+        // Получение клиента по номеру билета GET/ clients / :ticket
+        if (req.method === 'GET' && segments[0] === 'clients' && segments.length === 2) {
+  
+        }
+  
+        // ОБновление клиента по номеру билета PATCH/ clients / :ticket
+        if (req.method === 'PATCH' && segments[0] === 'clients' && segments.length === 2) {
+  
+        }
+        
+        // not found        
+        sendError(res, 404, 'Not found');        
+      } catch (error) {
+        sendError(res, 500, `Ошибка сервера: ${error.message}`);
+      }      
     })
     .listen(PORT);
   
