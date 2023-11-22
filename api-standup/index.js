@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import { checkFile } from './modules/checkFile.js';
 import { handleComediantsRequest } from './modules/handleComediantsRequest.js';
 import { sendError } from './modules/send.js';
+import { handleAddClient } from './modules/handleAddClient.js';
 
 const PORT = 8080;
 const COMEDIANS = './comedians.json';
@@ -29,7 +30,7 @@ const startServer = async () => {
         } 
   
         // добавление клиента POST / clients
-        if (req.method === 'POST' && segments[0] === 'clients' )  {
+        if (req.method === 'POST' && segments[0] === 'clients' )  {          
           handleAddClient(req, res);
           return; 
         }
