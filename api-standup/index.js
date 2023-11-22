@@ -24,6 +24,23 @@ const checkFiles = async () => {
   return true;
 };
 
+const sendData = (res, data) => {
+  res.writeHead(200, {
+    "Content-Type": "application/json; charset=utf-8",
+    "Access-Control-Allow-Origin": '*',
+  });
+
+  res.end(data);
+};
+
+const sendError = (res, statusCode, errMessage) => {
+  res.writeHead(statusCode, {
+    "Content-Type": "text/plan; charset=utf-8",
+  });
+
+  res.end(errMessage);
+};
+
 const startServer = async () => {
   if (!(await checkFiles())) return;
 
@@ -42,36 +59,21 @@ const startServer = async () => {
             const comedian = JSON.parse(data).find((c) => c.id === segments[1]);
 
             if (!comedian) {
-              res.writeHead(404, {
-                "Content-Type": "text/html; charset=utf-8",
-              });
-              res.end("<h2>Stendup комик не найден</h2>");
-              throw new Error('Standup undefaund'); 
+              sendError(res, 404, 'Stendup комик не найден');              
               return;
             }
 
-            res.writeHead(200, {
-              "Content-Type": "application/json; charset=utf-8",
-            });
-            res.end(JSON.stringify(comedian));
+            sendData(res, JSON.stringify(comedian));
             return;
           }
           
-          res.writeHead(200, {
-            "Content-Type": "application/json; charset=utf-8",
-          });
-          res.end(data);
+          sendData(res, data);
+          return;
         } catch (error) {
-          res.writeHead('500', { 
-            "Content-Type": "text/plain; charset=utf-8", 
-          });
-          res.end(`Ошибка сервера: ${error.message}`);
+          sendError(res, 500, `Ошибка сервера: ${error.message}`);
         }
       } else {
-        res.writeHead(404, {
-          "Content-Type": "text/html; charset=utf-8",          
-        });
-        res.end("<h2>Not found</h2>");
+        sendError(res, 404, 'Not found');
       }
     })
     .listen(PORT);
