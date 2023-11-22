@@ -30,17 +30,21 @@ const startServer = async () => {
   
         // добавление клиента POST / clients
         if (req.method === 'POST' && segments[0] === 'clients' )  {
-  
+          handleAddClient(req, res);
+          return; 
         }
   
         // Получение клиента по номеру билета GET/ clients / :ticket
         if (req.method === 'GET' && segments[0] === 'clients' && segments.length === 2) {
-  
+          const ticket = segments[1];
+          handleAddClient(req, res, ticket);
+          return; 
         }
   
         // ОБновление клиента по номеру билета PATCH/ clients / :ticket
-        if (req.method === 'PATCH' && segments[0] === 'clients' && segments.length === 2) {
-  
+        if (req.method === 'PATCH' && segments[0] === 'clients' && segments.length === 2) {          
+          handleUpdateClient(req, res, segments);
+          return; 
         }
         
         // not found        
