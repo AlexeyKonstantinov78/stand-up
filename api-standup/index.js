@@ -1,74 +1,30 @@
 import http from 'node:http';
 import fs from 'node:fs/promises';
+import { checkFile } from './modules/checkFile.js';
+import { handleComediantsRequest } from './modules/handleComediantsRequest.js';
+import { sendError } from './modules/send.js';
 
 const PORT = 8080;
 const COMEDIANS = './comedians.json';
 const CLIENTS = './clients.json';
 
-const checkFiles = async () => {
-  try {
-    await fs.access(COMEDIANS);
-  } catch (error) {
-    console.error(`File ${COMEDIANS} not fond`);
-    return false;  
-  }
-
-  try {
-    await fs.access(CLIENTS);
-  } catch (error) {
-    await fs.writeFile(CLIENTS, JSON.stringify([]));
-    console.error(`Файл ${CLIENTS} был создан`);
-    return false;
-  }
-
-  return true;
-};
-
-const sendData = (res, data) => {
-  res.writeHead(200, {
-    "Content-Type": "application/json; charset=utf-8",
-    "Access-Control-Allow-Origin": '*',
-  });
-
-  res.end(data);
-};
-
-const sendError = (res, statusCode, errMessage) => {
-  res.writeHead(statusCode, {
-    "Content-Type": "text/plan; charset=utf-8",
-  });
-
-  res.end(errMessage);
-};
-
 const startServer = async () => {
-  if (!(await checkFiles())) return;
+  if (!(await checkFile(COMEDIANS))) return;
+
+  if (!(await checkFile(CLIENTS, true))) return;
+
+  const comediansData = await fs.readFile(COMEDIANS, 'utf-8');
+  const comedians = JSON.parse(comediansData);
 
   http
     .createServer(async (req, res) => {         
       try {
-        res.setHeader("Access-Control-Allow-Origin", '*'); // заголовок  по доступу
-        console.log(req.url);
-        const segments = req.url.split('/').filter(Boolean); // фильтр boolean убирает пустые 
-        console.log('segments: ', segments);
+        res.setHeader("Access-Control-Allow-Origin", '*'); // заголовок  по доступу        
+        const segments = req.url.split('/').filter(Boolean); // фильтр boolean убирает пустые         
   
         // GET && comrdians/ id
         if (req.method === 'GET' && segments[0] === 'comedians') {          
-          const data = await fs.readFile(COMEDIANS, 'utf-8');
-          
-          if (segments.length === 2) {
-            const comedian = JSON.parse(data).find((c) => c.id === segments[1]);
-
-            if (!comedian) {
-              sendError(res, 404, 'Stendup комик не найден');              
-              return;
-            }
-
-            sendData(res, JSON.stringify(comedian));
-            return;
-          }
-          
-          sendData(res, data);
+          handleComediantsRequest(req, res, comedians, segments);
           return;          
         } 
   
