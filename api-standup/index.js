@@ -25,18 +25,40 @@ const checkFiles = async () => {
 };
 
 const startServer = async () => {
-
   if (!(await checkFiles())) return;
 
   http
-    .createServer(async (req, res) => {  
-      if (req.method === 'GET' && req.url === '/comedians') {
+    .createServer(async (req, res) => {        
+      res.setHeader("Access-Control-Allow-Origin", '*'); // заголовок  по доступу
+      console.log(req.url);
+      const segments = req.url.split('/').filter(Boolean); // фильтр boolean убирает пустые 
+      console.log('segments: ', segments);
+
+      if (req.method === 'GET' && segments[0] === 'comedians') {
         try {
           const data = await fs.readFile(COMEDIANS, 'utf-8');
           
-          res.writeHead(200, {      
+          if (segments.length === 2) {
+            const comedian = JSON.parse(data).find((c) => c.id === segments[1]);
+
+            if (!comedian) {
+              res.writeHead(404, {
+                "Content-Type": "text/html; charset=utf-8",
+              });
+              res.end("<h2>Stendup комик не найден</h2>");
+              throw new Error('Standup undefaund'); 
+              return;
+            }
+
+            res.writeHead(200, {
+              "Content-Type": "application/json; charset=utf-8",
+            });
+            res.end(JSON.stringify(comedian));
+            return;
+          }
+          
+          res.writeHead(200, {
             "Content-Type": "application/json; charset=utf-8",
-            "Access-Control-Allow-Origin": '*',
           });
           res.end(data);
         } catch (error) {
@@ -47,8 +69,7 @@ const startServer = async () => {
         }
       } else {
         res.writeHead(404, {
-          "Content-Type": "text/html; charset=utf-8",
-          "Access-Control-Allow-Origin": '*',
+          "Content-Type": "text/html; charset=utf-8",          
         });
         res.end("<h2>Not found</h2>");
       }
