@@ -51,6 +51,7 @@ const startServer = async () => {
       const segments = req.url.split('/').filter(Boolean); // фильтр boolean убирает пустые 
       console.log('segments: ', segments);
 
+      // GET && comrdians/{id}
       if (req.method === 'GET' && segments[0] === 'comedians') {
         try {
           const data = await fs.readFile(COMEDIANS, 'utf-8');
@@ -72,9 +73,26 @@ const startServer = async () => {
         } catch (error) {
           sendError(res, 500, `Ошибка сервера: ${error.message}`);
         }
-      } else {
-        sendError(res, 404, 'Not found');
+      } 
+
+      // добавление клиента POST / clients
+      if (req.method === 'POST' && segments[0] === 'clients' )  {
+
       }
+
+      // Получение клиента по номеру билета GET/ clients / :ticket
+      if (eq.method === 'GET' && segments[0] === 'clients' && segments.length === 2) {
+
+      }
+
+      // ОБновление клиента по номеру билета PATCH/ clients / :ticket
+      if (eq.method === 'PATCH' && segments[0] === 'clients' && segments.length === 2) {
+
+      }
+
+      // not found
+      sendError(res, 404, 'Not found');
+      
     })
     .listen(PORT);
   
