@@ -44,6 +44,7 @@ export const handleUpdateClient = (req, res, segments) => {
         return;
       }
 
+      
       clients[clientIndex] = {
         ...clients[clientIndex], ...updateDataClient
       };
