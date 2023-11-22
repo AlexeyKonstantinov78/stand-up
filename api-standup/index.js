@@ -7,7 +7,7 @@ import { handleAddClient } from './modules/handleAddClient.js';
 
 const PORT = 8080;
 const COMEDIANS = './comedians.json';
-const CLIENTS = './clients.json';
+export const CLIENTS = './clients.json';
 
 const startServer = async () => {
   if (!(await checkFile(COMEDIANS))) return;
