@@ -23,10 +23,7 @@ export const handleAddClient = (req, res) => {
         sendError(res, 400, 'Неверные основные данные клиента');
         return;
       }
-
-      console.log(Array.isArray(newClient.booking));
-      console.log(newClient.booking.every((item) => item.comedian && item.time));
-
+      
       if (
           newClient.booking && 
           (!newClient.booking.length ||

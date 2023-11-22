@@ -5,6 +5,7 @@ import { sendError } from './modules/send.js';
 import { handleComediantsRequest } from './modules/handleComediantsRequest.js';
 import { handleAddClient } from './modules/handleAddClient.js';
 import { handleClientsRequest } from './modules/handleClientsRequest.js';
+import { handleUpdateClient } from './modules/handleUpdateClient.js';
 
 const PORT = 8080;
 const COMEDIANS = './comedians.json';
@@ -44,7 +45,7 @@ const startServer = async () => {
         }
   
         // ОБновление клиента по номеру билета PATCH/ clients / :ticket
-        if (req.method === 'PATCH' && segments[0] === 'clients' && segments.length === 2) {          
+        if (req.method === 'PATCH' && segments[0] === 'clients' && segments.length === 2) {                   
           handleUpdateClient(req, res, segments);
           return; 
         }
