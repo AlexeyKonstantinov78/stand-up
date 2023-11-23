@@ -1,21 +1,60 @@
-.event {}
+.event {
+  width: 100%;
+  height: 100vh;
+  display: flex;  
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-image: url("../img/bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  color: #fff;
+}
 
-.event__title {}
+.event__title {  
+  font-size: 100px;  
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 62px;
+}
 
-.event__info {}
+.event__info {
+  display: flex;
+  gap: 80px;
+  margin-bottom: 62px;
+}
 
-.event__info-item {}
+.event__info-item {  
+  font-size: 30px;  
+  line-height: 2;
+  display: flex;
+  gap: 8px;
+  align-items: end;
+}
 
-.event__info-item_day {}
+.event__info-number {
+  color: #FFF;  
+  font-size: 80px;  
+  font-weight: 800;
+  line-height: 1.2;  
+}
 
-.event__info-number {}
+.event__button {
+  font-size: 24px;
+  line-height: 1.4;
+}
 
-.event__info-item_hall {}
+.event__button_reserve {
+  padding: 16px 36px;
+  border-radius: 36px;
+  background-color: #FFC119;
+  color: #1A1A1A;
+  margin-bottom: 24px;
+}
 
-.event__info-item_duration {}
-
-.event__info-item_comedians {}
-
-.event__button {}
-
-.event__button_reserve {}
+.event__button_edit {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+}

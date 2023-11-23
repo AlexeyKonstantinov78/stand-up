@@ -1,37 +1,80 @@
-.booking {}
+.booking {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items:center;
+  background-color: #EBECF1;
+  display: none;
+}
 
-.booking__container {}
+.booking__container {
+  min-width: 1440px;
+  margin: 0 auto;
+  padding: 0 80px;
+}
 
-.booking__title {}
+.booking__title {  
+  font-size: 46px;  
+  font-weight: 800;
+  line-height: 1.2;  
+  margin-bottom: 50px;
+}
 
-.booking__form {}
+.booking__fieldset_user-info {
+  margin-bottom: 50px;
+}
 
-.booking__fieldset {}
+.booking__legend {
+  font-size: 18px;
+  font-weight: 800;   
+  margin-bottom: 20px; 
+}
 
-.booking__fieldset_user-info {}
+.booking__input-group {
+  display: flex;
+  gap: 8px;
+}
 
-.booking__legend {}
+.booking__input {
+  display: block;
+  max-width: 380px;
+  height: 44px;
+  width: 100%;
+}
 
-.booking__input-group {}
+.booking__fieldset_comedians {
+  margin-bottom: 122px;
+}
 
-.booking__input {}
+.booking__comedians-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-.booking__input_fullname {}
+.booking__comedian {
+  display: flex;
+  align-items:center;
+  gap: 20px;
+}
 
-.booking__input_phone {}
+.booking__select_comedian {
+  margin-bottom: 8px;
+}
+.booking__select_time {
+  margin-bottom: 18px;
+}
 
-.booking__input_ticket {}
+.booking__hall {
 
-.booking__fieldset_comedians {}
+}
 
-.booking__comedians-list {}
-
-.booking__comedian {}
-
-.booking__select {}
-
-.booking__hall {}
-
-.booking__button {}
+.booking__button {
+  color: #1A1A1A;  
+  font-size: 18px;      
+  padding: 16px 36px;
+  border-radius: 36px;
+  background: #FFC219;
+}
 
 .booking_button_submit {}
